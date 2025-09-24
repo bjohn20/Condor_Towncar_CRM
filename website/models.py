@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class Client (models.Model):
   name = models.CharField(max_length=100)
@@ -18,10 +19,26 @@ class Driver (models.Model):
     return super().__str__()
   
 class Booking (models.Model):
+  # Metadata fields
+  created_at = models.DateTimeField(auto_now_add=True)
+  edited_at = models.DateTimeField(auto_now=True)
+  # Foreign Keys
   client = models.ForeignKey(Client, on_delete=models.CASCADE)
   driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
-  pickup_location = models.CharField(max_length=255)
-  dropoff_location = models.CharField(max_length=255)
+
+ # Pickup Location fields
+  pickup_street = models.CharField(max_length=255)
+  pickup_city = models.CharField(max_length=100)
+  pickup_state = models.CharField(max_length=50)
+  pickup_zipcode = models.CharField(max_length=10)
+
+  # Destination Location fields
+  destination_street = models.CharField(max_length=255)
+  destination_city = models.CharField(max_length=100)
+  destination_state = models.CharField(max_length=50)
+  destination_zipcode = models.CharField(max_length=10)
+
+  # Additional Booking fields
   pickup_time = models.DateTimeField()
   dropoff_time = models.DateTimeField(null=True, blank=True)
   status = models.CharField(max_length=50, choices=[
