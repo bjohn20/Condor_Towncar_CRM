@@ -8,7 +8,6 @@
     </strong>
   </div>
   <div class="card-body">
-    <h5 class="card-title">Special title treatment</h5>
     <p class="card-text">
       <strong>Driver: </strong>{{ booking.driver }}
     </p>
@@ -22,7 +21,11 @@
     </p>
 
     <p class="card-text">
-      <strong>Service: </strong>{{ booking.service }}
+      <strong>Service: </strong>{{ booking.get_service_type_display }}
+    </p>
+
+    <p class="card-text">
+      <strong>Price: </strong>{{ booking.price }}
     </p>
 
     <p class="card-text">
@@ -34,7 +37,10 @@
 
 <br><br>
 <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
-<a href="{% url 'booking_delete' booking.pk %}" class="btn btn-danger">Delete</a>
+<a href="{% url 'delete' pk=booking.pk %}" class="btn btn-danger">Delete</a>
+
+<a href="{% url 'update' pk=booking.pk %}" class="btn btn-secondary">Update Booking</a>
+
 
 
 {% endblock %}

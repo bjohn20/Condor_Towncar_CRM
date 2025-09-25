@@ -6,6 +6,12 @@ class Client (models.Model):
   email = models.EmailField(unique=True)
   phone_number = models.CharField(max_length=20, blank=True)
   
+  home_street = models.CharField(max_length=255, blank=True)
+  home_city = models.CharField(max_length=100, blank=True)
+  home_state = models.CharField(max_length=50, blank=True)
+  home_zipcode = models.CharField(max_length=10, blank=True)
+  client_notes = models.TextField(blank=True)
+  
   def __str__(self):
     return f'{self.name}'
   
@@ -32,6 +38,17 @@ class Booking (models.Model):
     ('OT', 'Other'),
   ]
   
+  # Airport Choice dropdown
+  AIRPORT_CHOICES = [
+    ('JFK', 'JFK'),
+    ('LGA', 'LGA'),
+    ('EWR', 'EWR'),
+    ('HPN', 'HPN'),
+    ('SWF', 'SWF'),
+    ('ISP', 'ISP'),
+    ('Other', 'Other'),
+  ]
+  
   service_type = models.CharField(max_length=2, choices=SERVICE_CHOICES, default='PT', verbose_name='Service Type')
   
   VEHICLE_CHOICES = [
@@ -47,10 +64,12 @@ class Booking (models.Model):
   delegated_driver_name = models.CharField(max_length=100, blank=True, null=True, verbose_name='Delegated Driver Name')
 
  # Pickup Location fields
-  pickup_street = models.CharField(max_length=255)
-  pickup_city = models.CharField(max_length=100)
-  pickup_state = models.CharField(max_length=50)
-  pickup_zipcode = models.CharField(max_length=10)
+  pickup_street = models.CharField(max_length=255, blank=True, null=True)
+  pickup_city = models.CharField(max_length=100, blank=True, null=True)
+  pickup_state = models.CharField(max_length=50, blank=True, null=True)
+  pickup_zipcode = models.CharField(max_length=10, blank=True, null=True)
+
+  airport_code = models.CharField(max_length=10, choices=AIRPORT_CHOICES, blank=True, null=True, default=None)
 
   # Destination Location fields
   destination_street = models.CharField(max_length=255)

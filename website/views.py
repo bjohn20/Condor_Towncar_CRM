@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Client, Driver, Booking
-from .forms import BookingForm
+from .forms import BookingForm, ClientForm
 
 # Create your views here.
 def home(request):
@@ -36,7 +36,7 @@ def logout_user(request):
 def booking_detail(request, pk):
   if request.user.is_authenticated:
     # Look up the booking
-    booking = Booking.objects.get(id=pk)
+    booking = Booking.objects.get(pk=pk)
     return render(request, 'booking.html', {'booking': booking})
   else:
     messages.error(request, "You must be logged in to view that page...")
@@ -45,7 +45,7 @@ def booking_detail(request, pk):
 def booking_delete(request, pk):
   if request.user.is_authenticated:
     # Look up the booking
-    booking = Booking.objects.get(id=pk)
+    booking = Booking.objects.get(pk=pk)
     booking.delete()
     messages.success(request, "Booking has been deleted...")
     return redirect('home')
@@ -64,7 +64,72 @@ def booking_add(request):
         form.save()
         messages.success(request, "New booking has been created...")
         return redirect('home')
-    return render(request, 'add_booking.html', {'form': form})
+    return render(request, 'booking_add.html', {'form': form})
+  else:
+    messages.error(request, "You must be logged in to do that...")
+    return redirect('home')
+  
+def booking_update(request, pk):
+  if request.user.is_authenticated:
+    current_booking = Booking.objects.get(pk=pk)
+    form = BookingForm(request.POST or None, instance=current_booking)
+    if form.is_valid():
+      form.save()
+      messages.success(request, "Booking has been updated...")
+      return redirect('home')
+    return render(request, 'booking_update.html', {'form': form})
+  else:
+    messages.error(request, "You must be logged in to do that...")
+    return redirect('home')
+
+def client_list(request):
+  if request.user.is_authenticated:
+    clients = Client.objects.all()
+    return render(request, 'client_list.html', {'clients': clients})
+  else:
+    messages.error(request, "You must be logged in to view that page...")
+    return redirect('home')
+  
+def client_add(request):
+  form = ClientForm(request.POST or None)
+  if request.user.is_authenticated:
+    if request.method == "POST":
+      if form.is_valid():
+        form.save()
+        messages.success(request, "New Client has been created...")
+        return redirect('clients')
+    return render(request, 'client_add.html', {'form': form})
+  else:
+    messages.error(request, "You must be logged in to do that...")
+    return redirect('home')
+  
+def client_detail(request, pk):
+  if request.user.is_authenticated:
+    client = Client.objects.get(pk=pk)
+    return render(request, 'client_detail.html', {'client': client})
+  else:
+    messages.error(request, "You must be logged in to view that page...")
+    return redirect('home')
+
+def client_delete(request, pk):
+  if request.user.is_authenticated:
+    client = Client.objects.get(pk=pk)
+    client.delete()
+    messages.success(request, "Client has been deleted...")
+    return redirect('clients')
+  else:
+    messages.error(request, "You must be logged in to do that...")
+    return redirect('home')
+  
+def client_update(request, pk):
+  if request.user.is_authenticated:
+    current_client = Client.objects.get(pk=pk)
+    form = ClientForm(request.POST or None, instance=current_client)
+    if form.is_valid():
+      form.save()
+      messages.success(request, "Client has been updated...")
+      return redirect('clients')
+    return render(request, 'client_update.html', {'form': form})
   else:
     messages.error(request, "You must be logged in to do that...")
     return redirect('home')
