@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+{% if user.is_authenticated %}
+
+
+<a href="{% url 'client_add' %}" class="btn btn-secondary">Add Client</a>
+
+<h1>Clients</h1>
+
+<table class="table table-striped table-hover table-bordered" id="bookings-list">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Client</th>
+      <th scope="col">City</th>
+      <th scope="col">State</th>
+      <th scope="col">Phone Number</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% if clients %}
+    {% for client in clients %}
+    <tr class="clickable-row" data-href="{% url 'client_detail' client.id %}">
+      <td>{{ client.name }}</td>
+      <td>{{ client.home_city }}</td>
+      <td>{{ client.home_state }}</td>
+      <td>{{ client.phone_number }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+<p>No Clients found.</p>
+{% endif %}
+
+{% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'website/js/booking_list_interactivity.js' %}"></script>
+{% endblock %}
