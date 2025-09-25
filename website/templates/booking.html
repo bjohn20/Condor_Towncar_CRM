@@ -1,13 +1,40 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1>Client Booking</h1>
+<div class="card">
+  <div class="card-header">
+    <strong>
+      {{ client_booking.client }}
+    </strong>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+    <p class="card-text">
+      <strong>Driver: </strong>{{ client_booking.driver }}
+    </p>
 
-{{ client_booking.client }}
-{{ client_booking.driver }}
-{{ client_booking.pickup_time }}
-{{ client_booking.dropoff_time }}
-{{ client_booking.service }}
-{{ client_booking.status }}
+    <p class="card-text">
+      <strong>Pickup Time: </strong>{{ client_booking.pickup_time }}
+    </p>
+
+    <p class="card-text">
+      <strong>Dropoff Time: </strong>{{ client_booking.dropoff_time }}
+    </p>
+
+    <p class="card-text">
+      <strong>Service: </strong>{{ client_booking.service }}
+    </p>
+
+    <p class="card-text">
+      <strong>Status: </strong>{{ client_booking.status }}
+    </p>
+
+  </div>
+</div>
+
+<br><br>
+<a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+<a href="{% url 'home' %}" class="btn btn-danger">Delete</a>
+
 
 {% endblock %}
