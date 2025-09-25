@@ -4,29 +4,29 @@
 <div class="card">
   <div class="card-header">
     <strong>
-      {{ client_booking.client }}
+      {{ booking.client }}
     </strong>
   </div>
   <div class="card-body">
     <h5 class="card-title">Special title treatment</h5>
     <p class="card-text">
-      <strong>Driver: </strong>{{ client_booking.driver }}
+      <strong>Driver: </strong>{{ booking.driver }}
     </p>
 
     <p class="card-text">
-      <strong>Pickup Time: </strong>{{ client_booking.pickup_time }}
+      <strong>Pickup Time: </strong>{{ booking.pickup_time }}
     </p>
 
     <p class="card-text">
-      <strong>Dropoff Time: </strong>{{ client_booking.dropoff_time }}
+      <strong>Dropoff Time: </strong>{{ booking.dropoff_time }}
     </p>
 
     <p class="card-text">
-      <strong>Service: </strong>{{ client_booking.service }}
+      <strong>Service: </strong>{{ booking.service }}
     </p>
 
     <p class="card-text">
-      <strong>Status: </strong>{{ client_booking.status }}
+      <strong>Status: </strong>{{ booking.status }}
     </p>
 
   </div>
@@ -34,7 +34,7 @@
 
 <br><br>
 <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
-<a href="{% url 'home' %}" class="btn btn-danger">Delete</a>
+<a href="{% url 'booking_delete' booking.pk %}" class="btn btn-danger">Delete</a>
 
 
 {% endblock %}

@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Client, Driver, Booking, Service
+from .models import Client, Driver, Booking
+from .forms import BookingForm
+
 # Create your views here.
 def home(request):
   bookings = Booking.objects.all()
@@ -34,8 +36,35 @@ def logout_user(request):
 def booking_detail(request, pk):
   if request.user.is_authenticated:
     # Look up the booking
-    client_booking = Booking.objects.get(id=pk)
-    return render(request, 'booking.html', {'client_booking': client_booking})
+    booking = Booking.objects.get(id=pk)
+    return render(request, 'booking.html', {'booking': booking})
   else:
     messages.error(request, "You must be logged in to view that page...")
+    return redirect('home')
+  
+def booking_delete(request, pk):
+  if request.user.is_authenticated:
+    # Look up the booking
+    booking = Booking.objects.get(id=pk)
+    booking.delete()
+    messages.success(request, "Booking has been deleted...")
+    return redirect('home')
+  else:
+    messages.error(request, "You must be logged in to do that...")
+    return redirect('home')
+  
+def booking_add(request):
+  # Create the form
+  form = BookingForm(request.POST or None)
+  
+  # Check to see if logged in
+  if request.user.is_authenticated:
+    if request.method == "POST":
+      if form.is_valid():
+        form.save()
+        messages.success(request, "New booking has been created...")
+        return redirect('home')
+    return render(request, 'add_booking.html', {'form': form})
+  else:
+    messages.error(request, "You must be logged in to do that...")
     return redirect('home')

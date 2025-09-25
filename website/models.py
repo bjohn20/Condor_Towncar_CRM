@@ -11,21 +11,11 @@ class Client (models.Model):
   
 class Driver (models.Model):
   name = models.CharField(max_length=100)
-  email = models.EmailField(unique=True)
   phone_number = models.CharField(max_length=20, blank=True)
   license_number = models.CharField(max_length=50, unique=True)
   
   def __str__(self):
     return f'{self.name}'
-  
-
-class Service (models.Model):
-  name = models.CharField(max_length=100)
-  description = models.TextField(blank=True)
-  price = models.DecimalField(max_digits=10, decimal_places=2)
-  
-  def __str__(self):
-    return f'{self.name} - ${self.price}'
   
 class Booking (models.Model):
   # Metadata fields
@@ -34,7 +24,27 @@ class Booking (models.Model):
   # Foreign Keys
   client = models.ForeignKey(Client, on_delete=models.CASCADE)
   driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
-  service = models.ForeignKey(Service, on_delete=models.SET_NULL, null=True)
+  
+  SERVICE_CHOICES = [
+    ('AT', 'Airport Transfer'),
+    ('PT', 'Point to Point'),
+    ('HR', 'Hourly'),
+    ('OT', 'Other'),
+  ]
+  
+  service_type = models.CharField(max_length=2, choices=SERVICE_CHOICES, default='PT', verbose_name='Service Type')
+  
+  VEHICLE_CHOICES = [
+    ('TC', 'Town Car (Self)'),
+    ('TD', 'Town Car (Delegated)'),
+    ('SUV', 'SUV'),
+  ]
+  
+  price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, null=True, blank=True)
+  
+  vehicle_type = models.CharField(max_length=3, choices=VEHICLE_CHOICES, default='TC')
+  
+  delegated_driver_name = models.CharField(max_length=100, blank=True, null=True, verbose_name='Delegated Driver Name')
 
  # Pickup Location fields
   pickup_street = models.CharField(max_length=255)
@@ -59,5 +69,5 @@ class Booking (models.Model):
   ], default='pending')
   
   def __str__(self):
-    return f'Booking {self.id} - {self.client.name} with {self.driver.name} - {self.service}'
-  
+    return f'Booking {self.id} - {self.client.name} with {self.driver.name} on {self.pickup_time.strftime("%Y-%m-%d %H:%M")}'
+
