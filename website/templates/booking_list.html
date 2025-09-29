@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<a href="{% url 'booking_list' %}" class="btn btn-secondary">Back</a>
+<a href="{% url 'add' %}" class="btn btn-secondary">Add Booking</a>
+<br><br>
+
+<h1>Bookings</h1>
+<br>
+<table class="table table-striped table-hover table-bordered" id="bookings-list">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Client</th>
+      <th scope="col">Driver</th>
+      <th scope="col">Pick Up</th>
+      <th scope="col">Dropoff</th>
+      <th scope="col">Service</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if bookings %}
+    {% for booking in bookings %}
+    <tr class="clickable-row" data-href="{% url 'booking_detail' booking.id %}">
+      <td>{{ booking.client }}</td>
+      <td>{{ booking.driver }}</td>
+      <td>{{ booking.pickup_time }}</td>
+      <td>{{ booking.dropoff_time }}</td>
+      <td>{{ booking.get_service_type_display }}</td>
+      <td>{{ booking.status }}</td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+  </tbody>
+</table>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'website/js/booking_list_interactivity.js' %}"></script>
+{% endblock %}

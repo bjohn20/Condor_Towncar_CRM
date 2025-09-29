@@ -1,12 +1,14 @@
-from django.urls import path, include
-from . import views
+from django.urls import path
+from . import views 
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('login/', views.login_user, name='login'),
-    path('logout/', views.logout_user, name='logout'),
+    path('', auth_views.LoginView.as_view(template_name='registration/login.html'), name='home'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
     
     # Booking URLs
+    path('booking_list/', views.booking_list, name='booking_list'),
     path('booking/detail/<int:pk>/', views.booking_detail, name='booking_detail'),
     path('delete/detail/<int:pk>/', views.booking_delete, name='delete'),
     path('booking_add/', views.booking_add, name='add'),

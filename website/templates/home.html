@@ -3,63 +3,36 @@
 
 {% block content %}
 
-
-{% if user.is_authenticated %}
-
-<h1>Bookings</h1>
-
-<table class="table table-striped table-hover table-bordered" id="bookings-list">
-  <thead class="table-dark">
-    <tr>
-      <th scope="col">Client</th>
-      <th scope="col">Driver</th>
-      <th scope="col">Pick Up</th>
-      <th scope="col">Dropoff</th>
-      <th scope="col">Service</th>
-      <th scope="col">Status</th>
-    </tr>
-  </thead>
-  <tbody>
-
-    {% if bookings %}
-    {% for booking in bookings %}
-    <tr class="clickable-row" data-href="{% url 'booking_detail' booking.id %}">
-      <td>{{ booking.client }}</td>
-      <td>{{ booking.driver }}</td>
-      <td>{{ booking.pickup_time }}</td>
-      <td>{{ booking.dropoff_time }}</td>
-      <td>{{ booking.service }}</td>
-      <td>{{ booking.status }}</td>
-    </tr>
-
-    {% endfor %}
-    {% endif %}
-
-  </tbody>
-</table>
-
-
-{% else %}
-<div class="col-md-6 offset-md-3">
-  <h1>Login</h1>
-
-
-  <form method="POST" action="{% url 'home' %}">
-    {% csrf_token %}
-    <br>
-    <div class="mb-3">
-      <input type="text" class="form-control" aria-describedby="emailHelp" name="username" placeholder="Username"
-        required>
+<div class="container text-center mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h1>Welcome to Your Town Car Service CRM!</h1>
+      <p class="lead">Manage your clients, drivers, and bookings with ease.</p>
     </div>
-    <div class="mb-3">
-      <input type="password" class="form-control" name="password" placeholder="Password" required>
+  </div>
+</div>
+
+<div class="row justify-content-center mt-4">
+  <div class="col-md-4">
+    <div class="card p-4">
+      <h5 class="card-title text-center">Login</h5>
+
+      <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" name="username" placeholder="Username" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" name="password" placeholder="Password" required>
+        </div>
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-secondary w-100">Login</button>
+        </div>
+      </form>
     </div>
-    <br>
-    <button type="submit" class="btn btn-secondary">Login</button>
-  </form>
-
-  {% endif %}
-
+  </div>
 </div>
 
 {% endblock %}

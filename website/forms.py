@@ -61,7 +61,7 @@ class BookingForm(forms.ModelForm):
     model = Booking
     
     # Specify the fields to include in the form
-    fields = ('client', 'driver', 'service_type', 'price', 'vehicle_type', 'delegated_driver_name', 'pickup_street', 'pickup_city', 'pickup_state', 'pickup_zipcode', 'destination_street', 'destination_city', 'destination_state', 'destination_zipcode', 'pickup_time', 'dropoff_time', 'status')
+    fields = ('client', 'driver', 'service_type', 'price', 'vehicle_type', 'delegated_driver_name', 'pickup_street', 'pickup_city', 'pickup_state', 'pickup_zipcode', 'destination_street', 'destination_city', 'destination_state', 'destination_zipcode', 'pickup_time', 'dropoff_time', 'status', 'airport_code')
     
     
     widgets = { 

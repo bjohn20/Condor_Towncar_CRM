@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="col-md-6 offset-md-3">
+
+  <div class="container text-center mt-5">
+    <h1>Welcome to Your Town Car Service CRM!</h1>
+    <p class="lead">Manage your clients, drivers, and bookings with ease.</p>
+    <a href="#" class="btn btn-primary btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#login">Get Started</a>
+  </div>
+
+  <div class="modal fade" id="login" tabindex="-1" aria-labelledby="loginLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginLabel">Login</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="{% url 'home' %}">
+            {% csrf_token %}
+            <br>
+            <div class="mb-3">
+              <input type="text" class="form-control" aria-describedby="emailHelp" name="username"
+                placeholder="Username" required>
+            </div>
+            <div class="mb-3">
+              <input type="password" class="form-control" name="password" placeholder="Password" required>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-secondary">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'website/js/booking_list_interactivity.js' %}"></script>
+{% endblock %}

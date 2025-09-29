@@ -2,7 +2,9 @@
 {% block content %}
 
 <div class="col-md-6 offset-md-3">
-  <h1>Update Booking</h1>
+  <a href="{% url 'clients' %}" class="btn btn-secondary">Back</a>
+  <br><br>
+  <h1>Update Client</h1>
   <br>
   <form method="POST" action="">
     {% csrf_token %}
