@@ -32,6 +32,15 @@
       <strong>Status: </strong>{{ booking.status }}
     </p>
 
+    <p class="card-text">
+      {% if booking.service_type == 'AT' %}
+      <strong>Dropoff: </strong>{{ booking.destination_street }}, {{ booking.destination_city }},
+      {{ booking.destination_state }}, {{ booking.destination_zipcode }} <br>
+      {% else %}
+      <strong>Dropoff: </strong> {{ booking.destination_street }}, {{ booking.destination_city }},
+      {{ booking.destination_state }}, {{ booking.destination_zipcode }} <br>
+      {% endif %}
+    </p>
   </div>
 </div>
 
