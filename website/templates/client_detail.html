@@ -1,46 +1,46 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="card">
-  <div class="card-header">
-    <strong>
-      {{ client.name }}
-    </strong>
-  </div>
-  <div class="card-body">
-    <p class="card-text">
-      <strong>Email: </strong>{{ client.email }}
-    </p>
+<div class="container mt-4 mb-5">
+  <div class="card">
+    <div class="card-header">
+      <strong>
+        {{ client.name }}
+      </strong>
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        <strong>Email: </strong>{{ client.email }}
+      </p>
 
-    <p class="card-text">
-      <strong>Phone Number: </strong>{{ client.phone_number }}
-    </p>
+      <p class="card-text">
+        <strong>Phone Number: </strong>{{ client.phone_number }}
+      </p>
 
-    <p class="card-text">
-      <strong>Home Street: </strong>{{ client.home_street }}
-    </p>
+      <p class="card-text">
+        <strong>Street: </strong>{{ client.home_street }}
+      </p>
 
-    <p class="card-text">
-      <strong>Home City: </strong>{{ client.home_city }}
-    </p>
+      <p class="card-text">
+        <strong>City: </strong>{{ client.home_city }}
+      </p>
 
-    <p class="card-text">
-      <strong>Home State: </strong>{{ client.home_state }}
-    </p>
+      <p class="card-text">
+        <strong>State: </strong>{{ client.home_state }}
+      </p>
 
-    <p class="card-text">
-      <strong>Home Zipcode: </strong>{{ client.home_zipcode }}
-    </p>
+      <p class="card-text">
+        <strong>Zipcode: </strong>{{ client.home_zipcode }}
+      </p>
 
-    <p class="card-text">
-      <strong>Client Notes: </strong>{{ client.client_notes }}
-    </p>
+      <p class="card-text">
+        <strong>Client Notes: </strong>{{ client.client_notes }}
+      </p>
 
+    </div>
   </div>
 </div>
 
-<br><br>
-<a href="{% url 'clients' %}" class="btn btn-secondary">Back</a>
 <a href="{% url 'client_delete' pk=client.pk %}" class="btn btn-danger">Delete</a>
 
 <a href="{% url 'client_update' pk=client.pk %}" class="btn btn-secondary">Update Client</a>

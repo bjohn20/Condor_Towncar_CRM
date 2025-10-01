@@ -1,111 +1,94 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Client, Driver, Booking
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from .mixins import RedirectAuthenticatedUserMixin
+from .models import Client, Booking
 from .forms import BookingForm, ClientForm
 
 # Create your views here.
-def home(request):
-  if request.user.is_authenticated:
-      return redirect('dashboard')
-  else:
-      return render(request, 'home.html', {})
 
-@login_required
-def dashboard(request):
-  # Fetch a few bookings to show on the dashboard
-  upcoming_bookings = Booking.objects.all().order_by('pickup_time')[:5]
+class HomeView(RedirectAuthenticatedUserMixin, TemplateView):
+  # The mixin will redirect authenticated users
+  # The template handles unauthenticated users
+  template_name = 'home.html'
+
+class DashboardView(LoginRequiredMixin, TemplateView):
+  template_name = 'dashboard.html'
   
-  # Get total counts for an at-a-glance view
-  total_bookings = Booking.objects.count()
-  total_clients = Client.objects.count()
-  
-  context = {'upcoming_bookings': upcoming_bookings, 'total_bookings': total_bookings, 'total_clients': total_clients}
-  
-  return render(request, 'dashboard.html', context)
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    # Fetch a few bookings to show on the dashboard
+    context['upcoming_bookings'] = Booking.objects.all().order_by('pickup_time')[:5]
+    # Get total counts for an at-a-glance view
+    context['total_bookings'] = Booking.objects.count()
+    context['total_clients'] = Client.objects.count()
+    return context
 
-@login_required
-def booking_list(request):
-    bookings = Booking.objects.all()
-    return render(request, 'booking_list.html', {'bookings': bookings})
-
-@login_required
-def booking_detail(request, pk):
-    # Look up the booking
-    booking = get_object_or_404(Booking, pk=pk)
-    return render(request, 'booking_detail.html', {'booking': booking})
-  
-@login_required
-def booking_delete(request, pk):
-    # Look up the booking
-    booking = get_object_or_404(Booking, pk=pk)
-    # Delete the booking
-    booking.delete()
-    messages.success(request, 'Booking deleted successfully.')
-    return redirect('booking_list')
-
-@login_required
-def booking_add(request):
-  # Create the form
-  if request.method == "POST":
-    # Bind data from request.POST
-    form = BookingForm(request.POST)
-    if form.is_valid():
-      form.save()
-      messages.success(request, 'Booking added successfully.')
-      return redirect('booking_list')
-    # This is a GET request
-  else:
-    form = BookingForm()
-    # This handles the case where the form is not valid
-  return render(request, 'booking_add.html', {'form': form})
-
-@login_required
-def booking_update(request, pk):
-    current_booking = get_object_or_404(Booking, pk=pk)
-    form = BookingForm(request.POST or None, instance=current_booking)
-    if form.is_valid():
-      form.save()
-      messages.success(request, 'Booking updated successfully.')
-      return redirect('booking_list')
-    return render(request, 'booking_update.html', {'form': form})
+class BookingListView(LoginRequiredMixin, ListView):
+    model = Booking
+    template_name = 'booking_list.html'
+    context_object_name = 'bookings'
+    ordering = ['pickup_time']
+    paginate_by = 10
+    
+class BookingDetailView(LoginRequiredMixin, DetailView):
+    model = Booking
+    template_name = 'booking_detail.html'
+    context_object_name = 'booking'
       
-@login_required
-def client_list(request):
-    clients = Client.objects.all()
-    return render(request, 'client_list.html', {'clients': clients})
+class BookingDeleteView(LoginRequiredMixin, DeleteView):
+    model = Booking
+    # Success URL: Where to redirect after deletion
+    # We use reverse_lazy because the URL configuration is not loaded when the file is imported
+    success_url = reverse_lazy('booking_list')
+    template_name = 'booking_confirm_delete.html'
 
-@login_required
-def client_add(request):
-  if request.method == "POST":
-    form = ClientForm(request.POST)
-    if form.is_valid():
-      form.save()
-      messages.success(request, 'Client added successfully.')
-      return redirect('clients')
-  else:
-    form = ClientForm()
-  return render(request, 'client_add.html', {'form': form})
+class BookingCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+  # Create view: provides all form creation and submission handling
+  model = Booking
+  form_class = BookingForm
+  template_name = 'booking_add.html'
+  success_url = reverse_lazy('booking_list')
+  success_message = "Booking created successfully."
 
-@login_required 
-def client_detail(request, pk):
-    client = get_object_or_404(Client, pk=pk)
-    return render(request, 'client_detail.html', {'client': client})
+class BookingUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+  model = Booking
+  form_class = BookingForm
+  template_name = 'booking_update.html'
+  success_url = reverse_lazy('booking_list')
+  success_message = "Booking updated successfully."
+      
+class ClientListView(LoginRequiredMixin, ListView):
+    model = Client
+    template_name = 'client_list.html'
+    context_object_name = 'clients'
+    ordering = ['name']
+    paginate_by = 10
 
-@login_required
-def client_delete(request, pk):
-    client = get_object_or_404(Client, pk=pk)
-    client.delete()
-    messages.success(request, 'Client deleted successfully.')
-    return redirect('clients')
+class ClientCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+  model = Client
+  form_class = ClientForm
+  template_name = 'client_add.html'
+  success_url = reverse_lazy('clients')
+  success_message = "Client added successfully."
 
-@login_required  
-def client_update(request, pk):
-    current_client = get_object_or_404(Client, pk=pk)
-    form = ClientForm(request.POST or None, instance=current_client)
-    if form.is_valid():
-      form.save()
-      messages.success(request, 'Client updated successfully.')
-      return redirect('clients')
-    return render(request, 'client_update.html', {'form': form})
+class ClientDetailView(LoginRequiredMixin, DetailView):
+    model = Client
+    template_name = 'client_detail.html'
+    context_object_name = 'client'
+
+class ClientDeleteView(LoginRequiredMixin, DeleteView):
+    model = Client
+    success_url = reverse_lazy('clients')
+    template_name = 'client_confirm_delete.html'
+
+class ClientUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+  model = Client
+  form_class = ClientForm
+  template_name = 'client_update.html'
+  success_url = reverse_lazy('clients')
+  success_message = "Client updated successfully."

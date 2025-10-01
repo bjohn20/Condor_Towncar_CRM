@@ -1,51 +1,63 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="card">
-  <div class="card-header">
-    <strong>
-      {{ booking.client }}
-    </strong>
-  </div>
-  <div class="card-body">
-    <p class="card-text">
-      <strong>Driver: </strong>{{ booking.driver }}
-    </p>
+<div class="container mt-5 mb-3">
+  <div class="card">
+    <div class="card-header">
+      <strong>
+        {{ booking.client }}
+      </strong>
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        <strong>Driver: </strong>{{ booking.driver }}
+      </p>
 
-    <p class="card-text">
-      <strong>Pickup Time: </strong>{{ booking.pickup_time }}
-    </p>
+      <p class="card-text">
+        <strong>Pickup Time: </strong>{{ booking.pickup_time }}
+      </p>
 
-    <p class="card-text">
-      <strong>Dropoff Time: </strong>{{ booking.dropoff_time }}
-    </p>
+      <p class="card-text">
+        <strong>Dropoff Time: </strong>{{ booking.dropoff_time }}
+      </p>
 
-    <p class="card-text">
-      <strong>Service: </strong>{{ booking.get_service_type_display }}
-    </p>
+      <p class="card-text">
+        <strong>Service: </strong>{{ booking.get_service_type_display }}
+      </p>
 
-    <p class="card-text">
-      <strong>Price: </strong>{{ booking.price }}
-    </p>
-
-    <p class="card-text">
-      <strong>Status: </strong>{{ booking.status }}
-    </p>
-
-    <p class="card-text">
       {% if booking.service_type == 'AT' %}
-      <strong>Dropoff: </strong>{{ booking.destination_street }}, {{ booking.destination_city }},
-      {{ booking.destination_state }}, {{ booking.destination_zipcode }} <br>
+      <p class="card-text">
+        <strong>Pick Up: </strong>{{ booking.get_airport_code_display }} <br>
+      </p>
+      <p class="card-text">
+        <strong>Dropoff: </strong>{{ booking.destination_street }}, {{ booking.destination_city }},
+        {{ booking.destination_state }}, {{ booking.destination_zipcode }}
+      </p>
       {% else %}
-      <strong>Dropoff: </strong> {{ booking.destination_street }}, {{ booking.destination_city }},
-      {{ booking.destination_state }}, {{ booking.destination_zipcode }} <br>
+      <p class="card-text">
+        <strong>Pick Up: </strong> {{ booking.pickup_street }},
+        {{ booking.pickup_city }},
+        {{ booking.pickup_state }}, {{ booking.pickup_zip }}
+      <p class="card-text">
+        <strong>Dropoff: </strong> {{ booking.destination_street }},
+        {{ booking.destination_city }},
+        {{ booking.destination_state }}, {{ booking.destination_zipcode }}
+      </p>
       {% endif %}
-    </p>
+      </p>
+
+      <p class="card-text">
+        <strong>Price: </strong>{{ booking.price }}
+      </p>
+
+      <p class="card-text">
+        <strong>Status: </strong>{{ booking.get_status_display }}
+      </p>
+
+    </div>
   </div>
 </div>
 
-<br><br>
-<a href="{% url 'booking_list' %}" class="btn btn-secondary">Back</a>
 <a href="{% url 'delete' pk=booking.pk %}" class="btn btn-danger">Delete</a>
 
 <a href="{% url 'update' pk=booking.pk %}" class="btn btn-secondary">Update Booking</a>

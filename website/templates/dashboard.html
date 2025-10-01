@@ -3,30 +3,32 @@
 
 {% block content %}
 
-<div class="container mt-4">
+<div class="container mt-4 mb-5">
   <h1 class="mb-4">Dashboard</h1>
 
-  <div class="col-md-4">
-    <div class="card text-white bg-primary mb-3">
-      <div class="card-body">
-        <h5 class="card-title">Total Clients</h5>
-        <p class="card-text fs-2">{{ total_clients }}</p>
-        <a href="{% url 'clients' %}" class="btn btn-light">View All Clients</a>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card text-white bg-primary mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Total Clients</h5>
+          <p class="card-text fs-2">{{ total_clients }}</p>
+          <a href="{% url 'clients' %}" class="btn btn-light">View All Clients</a>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card text-white bg-success mb-3">
-      <div class="card-body">
-        <h5 class="card-title">Total Bookings</h5>
-        <p class="card-text fs-2">{{ total_bookings }}</p>
-        <a href="{% url 'booking_list' %}" class="btn btn-light">View All Bookings</a>
+    <div class="col-md-6">
+      <div class="card text-white bg-success mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Total Bookings</h5>
+          <p class="card-text fs-2">{{ total_bookings }}</p>
+          <a href="{% url 'booking_list' %}" class="btn btn-light">View All Bookings</a>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="row">
+<div class="row mt-5 mb-5">
   <div class="col-md-12">
     <h2>Upcoming Bookings</h2>
     <hr>
@@ -38,18 +40,22 @@
           <strong>{{ booking.client.name }}</strong> <br> {{ booking.pickup_time|date:"M d, Y h:i A" }} <br>
 
           {% if booking.service_type == 'AT' %}
-          <strong>Pick Up: </strong> {{ booking.get_airport_code_display }} <br>
-          <strong>Dropoff: </strong> {{ booking.destination_street }} {{ booking.destination_city }}
-          {{ booking.destination_state }}
+          <strong>Pick Up: </strong>
+          {{ booking.get_airport_code_display }} <br>
+          <strong>Dropoff: </strong>
+          {{ booking.destination_street }},
+          {{ booking.destination_city }},
+          {{ booking.destination_state }},
           {{ booking.destination_zipcode }}
           {% else %}
           <strong>Pick Up: </strong>
-          {{ booking.pickup_street }}, {{ booking.pickup_city }},{{ booking.pickup_state }} {{ booking.pickup_zip }}
+          {{ booking.pickup_street }}, {{ booking.pickup_city }}, {{ booking.pickup_state }} {{ booking.pickup_zip }}
           <br>
-          <strong>Dropoff: </strong> {{
-          booking.destination_street }} {{
-          booking.destination_city }} {{
-          booking.destination_state }}
+          <strong>Dropoff: </strong>
+          {{ booking.destination_street }},
+          {{ booking.destination_city }},
+          {{ booking.destination_state }},
+          {{ booking.destination_zipcode }}
           {% endif %}
         </div>
         <a href="{% url 'booking_detail' pk=booking.pk %}" class="btn btn-sm btn-outline-secondary">View Details</a>
