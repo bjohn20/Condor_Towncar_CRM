@@ -61,8 +61,7 @@ class BookingForm(forms.ModelForm):
     model = Booking
     
     # Specify the fields to include in the form
-    fields = ('client', 'driver', 'service_type', 'price', 'vehicle_type', 'delegated_driver_name', 'pickup_street', 'pickup_city', 'pickup_state', 'pickup_zipcode', 'destination_street', 'destination_city', 'destination_state', 'destination_zipcode', 'pickup_time', 'dropoff_time', 'status', 'airport_code')
-    
+    fields = '__all__'
     
     widgets = { 
         # Style the widgets
@@ -93,28 +92,27 @@ class BookingForm(forms.ModelForm):
       'delegated_driver_name': 'Delegated Driver Name (if applicable)',
     }
     
+    def __init__(self, *args, **kwargs):
+      super().__init__(*args, **kwargs)
+      
+      # Make the fields that are sometimes optional not required in the form
+      self.fields['airport_code'].required = False
+    
     # --- The crucial validation logic ---
     def clean(self):
         cleaned_data = super().clean()
         service_type = cleaned_data.get("service_type")
         airport_code = cleaned_data.get("airport_code")
-
-        # 1. Logic for Airport Transfer
-        if service_type == 'Airport Transfer':
-            # REQUIRE the airport code
-            if airport_code == 'OTHER' or not airport_code:
-                self.add_error('airport_code', "You must select an airport for an Airport Transfer.")
-                
-            # DO NOT require the street address fields
-            # We don't need to add errors for street/city here, 
-            # as they are already set to blank=True, null=True in the model.
         
-        # 2. Logic for Standard Booking
-        else: # Standard A-to-B booking
-            # REQUIRE the street address fields
-            required_fields = ['pickup_street', 'pickup_city', 'destination_street', 'destination_city']
-            for field in required_fields:
-                if not cleaned_data.get(field):
-                    self.add_error(field, "This field is required for standard bookings.")
+        # Enforce logic based on service type
+        if service_type == 'AP':
+          # Airport Pickup logic
+          if not cleaned_data.get('airport_code'):
+            self.add_error('airport_code', "You must select an airport for an Airport Pickup.")
+            
+        elif service_type == 'AD':
+          # Airport Dropoff logic
+          if not cleaned_data.get('pickup_street'):
+            self.add_error('pickup_street', 'Street address is required for Airport Dropoff pickup.')
 
         return cleaned_data

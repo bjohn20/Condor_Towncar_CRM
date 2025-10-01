@@ -39,23 +39,18 @@
         <div>
           <strong>{{ booking.client.name }}</strong> <br> {{ booking.pickup_time|date:"M d, Y h:i A" }} <br>
 
-          {% if booking.service_type == 'AT' %}
+          {% comment %} Example logic for displaying Pickup location in dashboard.html {% endcomment %}
+
+          {% if booking.service_type == 'AP' %}
+          <strong>Pick Up: </strong> {{ booking.get_airport_code_display }}
+
+          {% elif booking.service_type == 'AD' %}
           <strong>Pick Up: </strong>
-          {{ booking.get_airport_code_display }} <br>
-          <strong>Dropoff: </strong>
-          {{ booking.destination_street }},
-          {{ booking.destination_city }},
-          {{ booking.destination_state }},
-          {{ booking.destination_zipcode }}
+          {{ booking.pickup_street }}, {{ booking.pickup_city }},{{ booking.pickup_state }}
+
           {% else %}
           <strong>Pick Up: </strong>
-          {{ booking.pickup_street }}, {{ booking.pickup_city }}, {{ booking.pickup_state }} {{ booking.pickup_zip }}
-          <br>
-          <strong>Dropoff: </strong>
-          {{ booking.destination_street }},
-          {{ booking.destination_city }},
-          {{ booking.destination_state }},
-          {{ booking.destination_zipcode }}
+          {{ booking.pickup_street }}, {{ booking.pickup_city }},{{ booking.pickup_state }}
           {% endif %}
         </div>
         <a href="{% url 'booking_detail' pk=booking.pk %}" class="btn btn-sm btn-outline-secondary">View Details</a>

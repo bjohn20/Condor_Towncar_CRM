@@ -32,7 +32,8 @@ class Booking (models.Model):
   driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
   
   SERVICE_CHOICES = [
-    ('AT', 'Airport Transfer'),
+    ('AP', 'Airport Pickup (Airport to Destination)'),
+    ('AD', 'Airport Dropoff (Destination to Airport)'),
     ('PT', 'Point to Point'),
     ('HR', 'Hourly'),
     ('OT', 'Other'),
