@@ -1,16 +1,118 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
 
-<div class="col-md-6 offset-md-3">
-  <br><br>
+<div class="col-md-6 offset-md-3 pt-4">
   <h1>Add Booking</h1>
   <br>
   <form method="POST" action="{% url 'add' %}">
     {% csrf_token %}
-    {{ form.as_p }}
-    <br>
-    <button type="submit" class="btn btn-secondary">Save</button>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        {{ form.client.label_tag }}
+        {{ form.client }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        {{ form.driver.label_tag }}
+        {{ form.driver }}
+      </div>
+      <div class="col-md-6 mb-3">
+        {{ form.delegated_driver_name.label_tag }}
+        {{ form.delegated_driver_name }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        {{ form.pickup_time.label_tag }}
+        {{ form.pickup_time }}
+      </div>
+    </div>
+
+    <div class="mb-3">
+      {{ form.service_type.label_tag }}
+      {{ form.service_type }}
+    </div>
+
+    <hr>
+
+    <div id="airport-fields" class="row" style="display: none;">
+      <h5 class="mt-2">Airport</h5>
+      <div class="col-md-12 mb-3">
+        {{ form.airport_code.label_tag }}
+        {{ form.airport_code }}
+      </div>
+    </div>
+
+    <div id="pickup-address-fields">
+      <h5 class="mt-4">Pickup Address</h5>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          {{ form.pickup_street.label_tag }}
+          {{ form.pickup_street }}
+        </div>
+        <div class="col-md-6 mb-3">
+          {{ form.pickup_city.label_tag }}
+          {{ form.pickup_city }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          {{ form.pickup_state.label_tag }}
+          {{ form.pickup_state }}
+        </div>
+        <div class="col-md-6 mb-3">
+          {{ form.pickup_zipcode.label_tag }}
+          {{ form.pickup_zipcode }}
+        </div>
+      </div>
+    </div>
+
+    <div id="destination-address-fields">
+      <h5 class="mt-4">Dropoff Address</h5>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          {{ form.destination_street.label_tag }}
+          {{ form.destination_street }}
+        </div>
+        <div class="col-md-6 mb-3">
+          {{ form.destination_city.label_tag }}
+          {{ form.destination_city }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          {{ form.destination_state.label_tag }}
+          {{ form.destination_state }}
+        </div>
+        <div class="col-md-6 mb-3">
+          {{ form.destination_zipcode.label_tag }}
+          {{ form.destination_zipcode }}
+        </div>
+      </div>
+
+      <hr>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          {{ form.price.label_tag }}
+          <input type="number" name="{{ form.price.name }}" id="{{ form.price.id_for_label }}"
+            value="{{ form.price.value|default_if_none:'0.00' }}" step="0.01" class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-secondary btn-lg mb-4">Save</button>
+
   </form>
 </div>
 
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'website/js/add_interactivity.js' %}"></script>
 {% endblock %}

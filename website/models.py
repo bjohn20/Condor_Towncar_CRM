@@ -18,7 +18,6 @@ class Client (models.Model):
 class Driver (models.Model):
   name = models.CharField(max_length=100)
   phone_number = models.CharField(max_length=20, blank=True)
-  license_number = models.CharField(max_length=50, unique=True)
   
   def __str__(self):
     return f'{self.name}'
@@ -58,7 +57,7 @@ class Booking (models.Model):
     ('SUV', 'SUV'),
   ]
   
-  price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, null=True, blank=True)
+  price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, null=True, blank=True, verbose_name='Trip Cost ($)')
   
   vehicle_type = models.CharField(max_length=3, choices=VEHICLE_CHOICES, default='TC')
   

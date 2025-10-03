@@ -43,14 +43,23 @@
 
           {% if booking.service_type == 'AP' %}
           <strong>Pick Up: </strong> {{ booking.get_airport_code_display }}
+          <br>
+          <strong>Dropoff: </strong> {{ booking.destination_street }}, {{ booking.destination_city }},
+          {{ booking.destination_state }}, {{ booking.destination_zipcode }}
 
           {% elif booking.service_type == 'AD' %}
           <strong>Pick Up: </strong>
           {{ booking.pickup_street }}, {{ booking.pickup_city }},{{ booking.pickup_state }}
+          <br>
+          <strong>Dropoff: </strong> {{ booking.destination_street }}, {{ booking.destination_city }},
+          {{ booking.destination_state }}, {{ booking.destination_zipcode }}
 
           {% else %}
           <strong>Pick Up: </strong>
           {{ booking.pickup_street }}, {{ booking.pickup_city }},{{ booking.pickup_state }}
+          <br>
+          <strong>Dropoff: </strong> {{ booking.destination_street }}, {{ booking.destination_city }},
+          {{ booking.destination_state }}, {{ booking.destination_zipcode }}
           {% endif %}
         </div>
         <a href="{% url 'booking_detail' pk=booking.pk %}" class="btn btn-sm btn-outline-secondary">View Details</a>
