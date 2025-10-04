@@ -5,11 +5,18 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1" , viewport-fit="cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="{% static 'icons/apple-touch-icon.png' %}">
+
   <title>Django CRM</title>
+
   <link rel="stylesheet" href="{% static 'website/css/styles.css' %}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+  <link rel="manifest" href="{% static 'dcrm/manifest.json' %}">
 </head>
 
 <body>
@@ -26,6 +33,9 @@
     {% block content %}{% endblock %}
 
   </div>
+
+  {% include 'includes/ios_install_prompt.html' %}
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
     crossorigin="anonymous"></script>
@@ -33,7 +43,60 @@
   <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
     integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
 
+  <script>
+    const isIOS = () => {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      // Check for iPhone, iPad, or iPod in the User Agent
+      return /iphone|ipad|ipod/.test(userAgent);
+    };
+
+    // Safari on iOS provides a non-standard 'standalone' property 
+    // to check if the app is already installed/launched from the home screen
+    const isInStandaloneMode = () => {
+      return ('standalone' in window.navigator) && (window.navigator.standalone);
+    };
+
+    const showInstallPrompt = () => {
+      // 1. Check if it's an iOS device
+      // 2. Check if the app is NOT already installed (i.e., not in standalone mode)
+      // 3. Check if the user is using Safari (Chrome/Edge on iOS don't support this PWA install method)
+      const isSafari = /^((?!chrome|android).)*safari/i.test(window.navigator.userAgent);
+
+      if (isIOS() && !isInStandaloneMode() && isSafari) {
+        const banner = document.getElementById('ios-install-banner');
+        if (banner) {
+          // Check if the user has previously dismissed the prompt (using localStorage)
+          if (localStorage.getItem('iosInstallPromptDismissed') !== 'true') {
+            banner.style.display = 'block';
+
+            // Add an event listener to save the dismissed state
+            banner.querySelector('.btn-close').addEventListener('click', () => {
+              localStorage.setItem('iosInstallPromptDismissed', 'true');
+            });
+          }
+        }
+      }
+    };
+
+    window.addEventListener('load', showInstallPrompt);
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register("{% static 'sw.js' %}")
+          .then(registration => {
+            console.log('Service Worker registered successfully with scope: ', registration.scope);
+          })
+          .catch(error => {
+            console.log('Service Worker registration failed: ', error);
+          });
+      });
+    }
+  </script>
+
   {% block extra_js %}{% endblock %}
+
 </body>
 
 </html>

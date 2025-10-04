@@ -1,0 +1,9 @@
+{
+  "name": "Condor Towncar CRM",
+  "short_name": "Con CRM",
+  "start_url": "/",
+  "description": "A progressive web app built with Django that handles Condor Towncar Services clientele",
+  "lang": "en-US",
+  "display": "Standalone",
+  "orientation": "portrait"
+}
