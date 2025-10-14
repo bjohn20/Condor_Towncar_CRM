@@ -17,37 +17,37 @@ The primary function is to serve as a single source of truth for all client rese
 
 This is the screen the user sees before logging in
 
-![Login Page](./assets/dashboard.JPEG)
+![Login Page](../assets/dashboard.JPEG)
 
 ### Dashboard View: Upcoming Reservations
 
 This is the primary screen, showing the immediate trips
 
-![Dashboard](./assets/dashboard.JPEG)
+![Dashboard](../assets/dashboard.JPEG)
 
 ### Booking List View: All reservation entries
 
 Sorted by most recent reservations, this is where the user can view past and upcoming reservations
 
-![Booking List Page](./assets/reservations.PNG)
+![Booking List Page](../assets/reservations.PNG)
 
 ### Booking Form View: Input fields
 
 Single page form that documents all trip variables including date, time, pick.dropoff locations. Client dropdown to ensure accurate data entry before submission to PostgreSQL database.
 
-![Reservation Form](./assets/add_booking.JPEG)
+![Reservation Form](../assets/add_booking.JPEG)
 
 ### Client Form View
 
 Form that documents and ensures accurate contact information is recordsd for repeated business
 
-![Client Form](./assets/add_client.PNG)
+![Client Form](../assets/add_client.PNG)
 
 ### Reservation Detail View
 
 This view Consolidates all necessary data for a specific trip
 
-![Reservation Details Page](./assets/booking_details.PNG)
+![Reservation Details Page](../assets/booking_details.PNG)
 
 Key Features & Implementation
 Custom PostgreSQL Data Model: Designed and implemented a robust relational database schema in PostgreSQL to manage three primary entities: Clients, Reservations, and Trips. This structure ensures data integrity and allows for efficient, complex queries (e.g., retrieving the next 5 upcoming trips).
