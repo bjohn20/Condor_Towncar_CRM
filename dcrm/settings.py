@@ -50,6 +50,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "dcrm.urls"
@@ -131,3 +133,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 LOGIN_REDIRECT_URL = "dashboard"
+
+# This is the essential setting for Whitenoise to work correctly
+# It compresses and hashes static files (which creates manifest.json)
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
