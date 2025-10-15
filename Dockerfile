@@ -22,10 +22,6 @@ RUN set -ex && \
     rm -rf /root/.cache/
 COPY . /code
 
-ENV SECRET_KEY "dcuMTQzdWkPWXmWrOSFqEFztBnB6vdHAG10Pk5rKVT4K07BHGp"
-ENV DB_PASSWORD=dummy_build_password
-RUN python manage.py collectstatic --noinput
-
 EXPOSE 8000
 
-CMD ["gunicorn","--bind",":8000","--workers","2","dcrm.wsgi"]
+CMD ["gunicorn","--bind","0.0.0.0:8000","--workers","2","dcrm.wsgi.application"]
