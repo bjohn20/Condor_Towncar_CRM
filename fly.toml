@@ -1,13 +1,22 @@
-# fly.toml app configuration file generated for condor-crm on 2025-10-14T17:10:04-04:00
+# fly.toml app configuration file generated for condor-crm1 on 2025-10-15T00:46:09-04:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'condor-crm'
-primary_region = 'atl'
+app = 'condor-crm1'
+primary_region = 'iad'
+console_command = '/code/manage.py shell'
+
+[build]
+
+[deploy]
+  release_command = 'python manage.py migrate --noinput'
+
+[env]
+  PORT = '8000'
 
 [http_service]
-  internal_port = 8080
+  internal_port = 8000
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
@@ -18,3 +27,7 @@ primary_region = 'atl'
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
+
+[[statics]]
+  guest_path = '/code/static'
+  url_prefix = '/static/'

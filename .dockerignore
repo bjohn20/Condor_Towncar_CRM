@@ -1,15 +1,3 @@
-# flyctl launch added from dcrm\.gitignore
-# Python
-dcrm\**\__pycahe__
-dcrm\**\*.pyc
-dcrm\**\myenv
-dcrm\**\staticfiles
-dcrm\**\local_settings.py
-dcrm\**\db.sqlite3
-dcrm\**\.DS_Store
-dcrm\**\Thumbs.db
-
-# flyctl launch added from myenv\.gitignore
-# Created by venv; see https://docs.python.org/3/library/venv.html
-myenv\**\*
 fly.toml
+.git/
+*.sqlite3
