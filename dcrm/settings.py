@@ -32,15 +32,17 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     "192.168.1.75",
-    ".fly.dev",
-    "condor-crm1.fly.dev",
+    "condor-crm1-production.up.railway.app",
+    ".up.railway.app",  # <-- Wildcard for any Railway app on that domain
+    "railway.app",  # <-- Catch-all for default Railway settings
 ]
 
 # REQUIRED for production security on Fly.io
 # Tell Django that all requests are secure, as Fly.io's proxy handles HTTPS
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.fly.dev",
+    "https://*.up.railway.app",
+    "https://*.railway.app",
 ]  # Or specifically "https://condor-crm1.fly.dev"
 # For HSTS, which is highly recommended in production
 SECURE_HSTS_SECONDS = 31536000  # 1 year
