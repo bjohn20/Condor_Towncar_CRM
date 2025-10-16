@@ -24,4 +24,4 @@ COPY . /code
 
 EXPOSE 8000
 
-CMD ["gunicorn","--bind","0.0.0.0:8000","--workers","2","dcrm.wsgi.application"]
+CMD ["python", "-m", "gunicorn", "--bind", "0.0.0.0:$PORT", "dcrm.wsgi:application"]
