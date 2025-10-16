@@ -24,4 +24,5 @@ COPY . /code
 
 EXPOSE 8000
 
-CMD ["python", "-m", "gunicorn", "--bind", "0.0.0.0:$PORT", "dcrm.wsgi:application"]
+# Variables ARE expanded here
+CMD python -m gunicorn --bind 0.0.0.0:$PORT dcrm.wsgi:application
